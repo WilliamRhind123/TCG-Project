@@ -1,8 +1,23 @@
-<div>Teachable Machine Image Model</div>
-<button type="button" onclick="init()">Start</button>
-<div id="webcam-container"></div>
-<div id="label-container"></div>
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="container pmx-auto">
+    <h1 class="mb-4" style="text-align: center;">Welcome to TCG SCANNER</h1>
+    <p class="mb-4" style="text-align: center;">Scan your trading cards with ease and keep track of your collection</p>
+    <button type="button" class="btn btn-outline-primary btn-lg d-block mx-auto mb-4"
+        style="border-color: #9344fc; color: #9344fc;" onclick="init()">
+        Start
+    </button>
+    <div style="text-align: center;" id="webcam-container"></div>
+    <div style="text-align: center;" id="class-container">
+	    <h2 id="class-name"></h2>
+    </div>
+    <div style="text-align: center;" id="label-container"></div>
+</div>
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
 
 <script src="/static/js/scanner.js"></script>
+{% endblock %}
