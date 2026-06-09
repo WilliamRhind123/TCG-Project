@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Request Trade{% endblock %}
+
+{% block content %}
+
+<div class="trade-page">
+
+    <h1 class="trade-title">
+        Trade Request
+    </h1>
+
+    <p class="trade-subtitle">
+        Requesting {{ pokemon_name }} from {{ receiver.username }}
+    </p>
+
+    <div class="trade-results-grid">
+
+        {% for pokemon in offered_pokemon %}
+
+        <div class="trade-result-card">
+
+            <img class="trade-pokemon-img"
+                 src="{{ pokemon.image }}">
+
+            <h3>{{ pokemon.name }}</h3>
+
+            <strong>
+                Quantity: x{{ pokemon.quantity }}
+            </strong>
+
+            <form method="POST"
+                  action="{{ url_for('trade.send_trade_request') }}">
+
+                <input type="hidden"
+                       name="receiver_id"
+                       value="{{ receiver.id }}">
+
+                <input type="hidden"
+                       name="requested_pokemon_name"
+                       value="{{ pokemon_name }}">
+
+                <input type="hidden"
+                       name="offered_pokemon_id"
+                       value="{{ pokemon.id }}">
+
+                <button class="trade-request-btn">
+                    Offer Trade
+                </button>
+
+            </form>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

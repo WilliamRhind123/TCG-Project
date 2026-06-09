@@ -1,0 +1,423 @@
+{% extends "base.html" %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+
+{% set all_types = [
+    "Bug", "Dark", "Dragon", "Electric",
+    "Fairy", "Fighting", "Fire", "Flying",
+    "Ghost", "Grass", "Ground", "Ice",
+    "Normal", "Psychic", "Poison",
+    "Steel", "Rock", "Water"
+] %}
+
+<div class="profile-page">
+
+    <div class="profile-header">
+
+        <img class="profile-header-pic"
+             src="{{ url_for('static',
+             filename='PokemonSpritesGen1/' ~ current_user.favourite_pokemon_id ~ '.png') }}">
+
+        <div>
+
+            <h2 class="profile-username">
+                {{ current_user.username }}
+            </h2>
+
+            <p class="profile-subtitle">
+                Pokémon Trainer
+            </p>
+
+        </div>
+
+    </div>
+
+    <h1 class="profile-title">
+        Achievement Badges
+    </h1>
+
+    <div class="badge-grid">
+
+        {% for type_name in all_types %}
+
+            {% set count = type_counts.get(type_name, 0) %}
+
+            {% if count >= 5 %}
+                {% set ring = "GoldRing.png" %}
+            {% elif count >= 3 %}
+                {% set ring = "SilverRing.png" %}
+            {% elif count >= 1 %}
+                {% set ring = "BronzeRing.png" %}
+            {% else %}
+                {% set ring = None %}
+            {% endif %}
+
+            <div class="badge-card"
+                 onclick="openBadgePanel(this)"
+                 data-type="{{ type_name }}"
+                 data-count="{{ count }}"
+                 data-pokemon='{{ type_pokemon.get(type_name, []) | tojson }}'>
+
+                <div class="badge-frame">
+
+                    {% if ring %}
+
+                    <img class="badge-ring"
+                         src="{{ url_for('static',
+                         filename='Badges/Rings/' ~ ring) }}">
+
+                    {% endif %}
+
+                    <img class="badge-icon"
+                         src="{{ url_for('static',
+                         filename='Types/Icon/' ~ type_name ~ '.png') }}">
+
+                </div>
+
+                <h3>{{ type_name }}</h3>
+
+                <p>{{ count }} Pokémon Collected</p>
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+    <!-- Side view -->
+
+    <div id="badge-side-panel" class="badge-side-panel">
+
+        <button class="close-badge-panel"
+                onclick="closeBadgePanel()">
+
+            ×
+
+        </button>
+
+        <h2 id="side-badge-title">
+            Badge Details
+        </h2>
+
+        <div id="side-badge-status"></div>
+
+        <h4 class="side-section-title">
+            Pokémon counting toward this badge
+        </h4>
+
+        <div id="side-badge-pokemon-list"></div>
+
+        <h4 class="side-section-title">
+            Badge Levels
+        </h4>
+
+        <div id="side-badge-levels"></div>
+
+    </div>
+
+    <div id="badge-panel-overlay"
+         class="badge-panel-overlay"
+         onclick="closeBadgePanel()">
+    </div>
+
+    <h1 class="profile-title">
+        Collection Achievements
+    </h1>
+
+    <div class="badge-grid">
+
+        <!-- Unique pokemon badge -->
+        {% if unique_pokemon_count >= 100 %}
+            {% set unique_badge = "UniqueGold.png" %}
+            {% set unique_level = "Gold" %}
+            {% set unique_ring = "GoldRing.png" %}
+        {% elif unique_pokemon_count >= 50 %}
+            {% set unique_badge = "UniqueSilver.png" %}
+            {% set unique_level = "Silver" %}
+            {% set unique_ring = "SilverRing.png" %}
+        {% elif unique_pokemon_count >= 5 %}
+            {% set unique_badge = "UniqueBronze.png" %}
+            {% set unique_level = "Bronze" %}
+            {% set unique_ring = "BronzeRing.png" %}
+        {% else %}
+            {% set unique_badge = None %}
+            {% set unique_level = "Locked" %}
+            {% set unique_ring = None %}
+        {% endif %}
+
+        <div class="badge-card">
+            <div class="badge-frame">
+                {% if unique_ring %}
+                    <img class="badge-ring"
+                        src="{{ url_for('static', filename='Badges/Rings/' ~ unique_ring) }}">
+                {% endif %}
+
+                <img class="badge-icon"
+                    src="{% if unique_badge %}
+                            {{ url_for('static', filename='Badges/Unique/' ~ unique_badge) }}
+                        {% else %}
+                            {{ url_for('static', filename='Badges/default_badge.png') }}
+                        {% endif %}">
+            </div>
+
+            <h3>Unique Pokémon</h3>
+            <p>{{ unique_pokemon_count }} unique Pokémon found</p>
+            <p>{{ unique_level }} Badge</p>
+        </div>
+
+
+        <!-- Collector Badge -->
+        {% if total_pokemon_count >= 2000 %}
+            {% set collector_badge = "CollectorGold.png" %}
+            {% set collector_level = "Gold" %}
+            {% set collector_ring = "GoldRing.png" %}
+        {% elif total_pokemon_count >= 500 %}
+            {% set collector_badge = "CollectorSilver.png" %}
+            {% set collector_level = "Silver" %}
+            {% set collector_ring = "SilverRing.png" %}
+        {% elif total_pokemon_count >= 30 %}
+            {% set collector_badge = "CollectorBronze.png" %}
+            {% set collector_level = "Bronze" %}
+            {% set collector_ring = "BronzeRing.png" %}
+        {% else %}
+            {% set collector_badge = None %}
+            {% set collector_level = "Locked" %}
+            {% set collector_ring = None %}
+        {% endif %}
+
+        <div class="badge-card">
+            <div class="badge-frame">
+                {% if collector_ring %}
+                    <img class="badge-ring"
+                        src="{{ url_for('static', filename='Badges/Rings/' ~ collector_ring) }}">
+                {% endif %}
+
+                <img class="badge-icon"
+                    src="{% if collector_badge %}
+                            {{ url_for('static', filename='Badges/Collector/' ~ collector_badge) }}
+                        {% else %}
+                            {{ url_for('static', filename='Badges/default_badge.png') }}
+                        {% endif %}">
+            </div>
+
+            <h3>Total Collector</h3>
+            <p>{{ total_pokemon_count }} total Pokémon collected</p>
+            <p>{{ collector_level }} Badge</p>
+        </div>
+
+
+        <!-- Trader badge -->
+        {% if accepted_trades >= 20 %}
+            {% set trader_badge = "Gold.png" %}
+            {% set trader_level = "Gold" %}
+            {% set trader_ring = "GoldRing.png" %}
+        {% elif accepted_trades >= 10 %}
+            {% set trader_badge = "Silver.png" %}
+            {% set trader_level = "Silver" %}
+            {% set trader_ring = "SilverRing.png" %}
+        {% elif accepted_trades >= 5 %}
+            {% set trader_badge = "Bronze.png" %}
+            {% set trader_level = "Bronze" %}
+            {% set trader_ring = "BronzeRing.png" %}
+        {% else %}
+            {% set trader_badge = None %}
+            {% set trader_level = "Locked" %}
+            {% set trader_ring = None %}
+        {% endif %}
+
+        <div class="badge-card">
+            <div class="badge-frame">
+                {% if trader_ring %}
+                    <img class="badge-ring"
+                        src="{{ url_for('static', filename='Badges/Rings/' ~ trader_ring) }}">
+                {% endif %}
+
+                <img class="badge-icon"
+                    src="{% if trader_badge %}
+                            {{ url_for('static', filename='Badges/Trader/' ~ trader_badge) }}
+                        {% else %}
+                            {{ url_for('static', filename='Badges/default_badge.png') }}
+                        {% endif %}">
+            </div>
+
+            <h3>Pokémon Trader</h3>
+            <p>{{ accepted_trades }} successful trades</p>
+            <p>{{ trader_level }} Badge</p>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+function openBadgePanel(card) {
+
+    const typeName = card.dataset.type;
+
+    const count = Number(card.dataset.count);
+
+    const pokemonList = JSON.parse(card.dataset.pokemon);
+
+    document.getElementById("side-badge-title").innerText =
+        typeName + " Badge";
+
+    let currentBadge = "No badge yet";
+
+    if (count >= 5) {
+        currentBadge = "Gold Badge";
+    }
+
+    else if (count >= 3) {
+        currentBadge = "Silver Badge";
+    }
+
+    else if (count >= 1) {
+        currentBadge = "Bronze Badge";
+    }
+
+    let nextRequirement = "";
+
+    if (count < 1) {
+
+        nextRequirement =
+            "Catch 1 unique " + typeName +
+            " Pokémon to unlock Bronze.";
+
+    }
+
+    else if (count < 3) {
+
+        nextRequirement =
+            "Catch " + (3 - count) +
+            " more unique " + typeName +
+            " Pokémon to unlock Silver.";
+
+    }
+
+    else if (count < 5) {
+
+        nextRequirement =
+            "Catch " + (5 - count) +
+            " more unique " + typeName +
+            " Pokémon to unlock Gold.";
+
+    }
+
+    else {
+
+        nextRequirement =
+            "You have completed this badge!";
+
+    }
+
+    document.getElementById("side-badge-status").innerHTML = `
+
+        <div class="badge-current-status">
+
+            <h3>${currentBadge}</h3>
+
+            <p>
+                ${count} unique ${typeName} Pokémon collected
+            </p>
+
+            <strong>${nextRequirement}</strong>
+
+        </div>
+
+    `;
+
+    const pokemonBox =
+        document.getElementById("side-badge-pokemon-list");
+
+    if (pokemonList.length === 0) {
+
+        pokemonBox.innerHTML = `
+
+            <p class="empty-badge-message">
+                No ${typeName} Pokémon collected yet.
+            </p>
+
+        `;
+
+    }
+
+    else {
+
+        let html = "";
+
+        pokemonList.forEach(pokemon => {
+
+            html += `
+
+                <div class="badge-pokemon-row">
+
+                    <img src="/static/PokemonSpritesGen1/${pokemon.id}.png">
+
+                    <span>${pokemon.name}</span>
+
+                </div>
+
+            `;
+
+        });
+
+        pokemonBox.innerHTML = html;
+
+    }
+
+    document.getElementById("side-badge-levels").innerHTML = `
+
+        <div class="badge-level ${count >= 1 ? "unlocked" : "locked"}">
+
+            <strong>Bronze</strong>
+
+            <p>
+                1 unique ${typeName} Pokémon
+            </p>
+
+        </div>
+
+        <div class="badge-level ${count >= 3 ? "unlocked" : "locked"}">
+
+            <strong>Silver</strong>
+
+            <p>
+                3 unique ${typeName} Pokémon
+            </p>
+
+        </div>
+
+        <div class="badge-level ${count >= 5 ? "unlocked" : "locked"}">
+
+            <strong>Gold</strong>
+
+            <p>
+                5 unique ${typeName} Pokémon
+            </p>
+
+        </div>
+
+    `;
+
+    document.getElementById("badge-side-panel")
+        .classList.add("open");
+
+    document.getElementById("badge-panel-overlay")
+        .classList.add("show");
+}
+
+function closeBadgePanel() {
+
+    document.getElementById("badge-side-panel")
+        .classList.remove("open");
+
+    document.getElementById("badge-panel-overlay")
+        .classList.remove("show");
+}
+
+</script>
+
+{% endblock %}

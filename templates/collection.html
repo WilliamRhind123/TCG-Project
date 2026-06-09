@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+
+{% block title %}Collection{% endblock %}
+
+{% block content %}
+
+<div class="collection-page">
+
+    <div class="collection-stats">
+
+        <div class="stat-card">
+            <h4>Total Cards</h4>
+            <p>{{ total_pokemon }}</p>
+        </div>
+
+        <div class="stat-card">
+            <h4>Pokédex Completion</h4>
+            <p>{{ unique_pokemon }} / 151</p>
+            <small>{{ completion_percentage }}%</small>
+        </div>
+
+        <div class="stat-card">
+            <h4>Most Owned</h4>
+            <p>{{ most_owned_name }}</p>
+        </div>
+
+        <div class="stat-card">
+            <h4>Newest Added</h4>
+            <p>{{ newest_name }}</p>
+        </div>
+
+    </div>
+
+    <div class="progress-container">
+        <div class="progress-bar-fill" style="width: {{ completion_percentage }}%;"></div>
+    </div>
+
+    <div class="collection-controls">
+
+        <input
+            type="text"
+            id="pokemon-search"
+            placeholder="Search Pokémon or type..."
+            onkeyup="searchPokemon()">
+
+        <div class="sort-buttons">
+            <button onclick="sortPokemon('number')">Pokédex Order</button>
+            <button onclick="sortPokemon('az')">A-Z</button>
+            <button onclick="sortPokemon('owned')">Owned First</button>
+            <button onclick="sortPokemon('missing')">Missing First</button>
+            <button onclick="sortPokemon('quantity')">Most Quantity</button>
+            <select id="type-sort" onchange="filterByType()">
+                <option value="">Filter By Type</option>
+
+                <option value="Bug">Bug</option>
+                <option value="Dark">Dark</option>
+                <option value="Dragon">Dragon</option>
+                <option value="Electric">Electric</option>
+                <option value="Fairy">Fairy</option>
+                <option value="Fighting">Fighting</option>
+
+                <option value="Fire">Fire</option>
+                <option value="Flying">Flying</option>
+                <option value="Ghost">Ghost</option>
+                <option value="Grass">Grass</option>
+                <option value="Ground">Ground</option>
+
+                <option value="Ice">Ice</option>
+                <option value="Normal">Normal</option>
+                <option value="Poison">Poison</option>
+                <option value="Psychic">Psychic</option>
+
+                <option value="Rock">Rock</option>
+                <option value="Steel">Steel</option>
+                <option value="Water">Water</option>
+
+            </select>
+        </div>
+
+        <button id="shiny-toggle-btn" onclick="toggleShinyMode()">
+            Shiny Version
+        </button>
+
+    </div>
+
+    <div class="pokemon-grid">
+
+        {% for pokemon in pokemon_list %}
+
+        {% set main_type = pokemon['type'][0] %}
+
+        <div class="pokemon-box {% if pokemon['id'] not in owned %}locked{% endif %}"
+             onclick="showPokemonDetails(this)"
+             data-name="{{ pokemon['name']['english'] }}"
+             data-id="{{ pokemon['id'] }}"
+             data-type="{{ pokemon['type'] | join(', ') }}"
+             data-main-type="{{ main_type }}"
+             data-species="{{ pokemon['species'] }}"
+             data-description="{{ pokemon['description'] }}"
+             data-height="{{ pokemon['profile']['height'] }}"
+             data-weight="{{ pokemon['profile']['weight'] }}"
+             data-quantity="{{ owned[pokemon['id']] if pokemon['id'] in owned else 0 }}"
+             data-owned="{% if pokemon['id'] in owned %}true{% else %}false{% endif %}"
+             data-image="{{ url_for('static', filename='PokemonSpritesGen1/' ~ pokemon['id'] ~ '.png') }}"
+             data-type-icon="{{ url_for('static', filename='Types/Icon/' ~ type_number ~ '.png') }}"
+             data-type-image="{{ url_for('static', filename='Types/' ~ main_type ~ '.png') }}">
+
+            <img class="mini-type-icon"
+                src="{{ url_for('static', filename='Types/Icon/' ~ main_type|lower ~ '.png') }}"
+                alt="{{ main_type }}">
+
+            <img class="pokemon-sprite"
+                 src="{{ url_for('static', filename='PokemonSpritesGen1/' ~ pokemon['id'] ~ '.png') }}"
+                 alt="{{ pokemon['name']['english'] }}">
+
+            <p>
+                {{ pokemon['name']['english'] }}
+
+                {% if pokemon['id'] in owned %}
+                    <br>x{{ owned[pokemon['id']] }}
+                {% endif %}
+            </p>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    <div class="pokemon-detail-panel" id="pokemon-detail-panel">
+
+    <img id="detail-image" src="" alt="Pokemon">
+
+    <h2 id="detail-name">Select a Pokémon</h2>
+
+    <img id="detail-type-image"
+         class="detail-type-image"
+         src=""
+         alt="Type">
+
+    <p id="detail-quantity"></p>
+    <p id="detail-type"></p>
+    <p id="detail-species"></p>
+    <p id="detail-height"></p>
+    <p id="detail-weight"></p>
+    <p id="detail-description"></p>
+
+</div>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/collection.js') }}"></script>
+
+{% endblock %}

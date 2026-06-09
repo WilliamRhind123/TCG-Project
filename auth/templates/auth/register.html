@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4" style="max-width: 900px;">
+
+    <h1 class="text-center mb-4">Create Account</h1>
+
+    <form method="POST">
+
+        <div class="form-group mb-3">
+            <label for="username">Username:</label>
+            <input 
+                type="text" 
+                class="form-control" 
+                id="username" 
+                name="username"
+                value="{{ request.form.get('username', '') }}"
+                required>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="password">Password:</label>
+            <input 
+                type="password" 
+                class="form-control" 
+                id="password" 
+                name="password" 
+                required>
+        </div>
+
+        <h4 class="mt-4 mb-3 text-center">
+            Choose Your Favourite Pokémon
+        </h4>
+
+        <div class="favourite-pokemon-grid">
+
+            {% for number in range(1, 152) %}
+
+            <div class="favourite-option">
+
+                <input
+                    type="radio"
+                    id="pokemon-{{ number }}"
+                    name="favourite_pokemon_id"
+                    value="{{ number }}"
+                    {% if number == 25 %}checked{% endif %}>
+
+                <label for="pokemon-{{ number }}">
+                    <img src="{{ url_for('static', filename='PokemonSpritesGen1/' ~ number ~ '.png') }}">
+                    <span>#{{ number }}</span>
+                </label>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 mt-4">
+            Register
+        </button>
+
+    </form>
+
+    <p class="mt-3 text-center">
+        Already have an account?
+        <a href="{{ url_for('auth.login') }}">Login here</a>.
+    </p>
+
+</div>
+
+{% endblock %}

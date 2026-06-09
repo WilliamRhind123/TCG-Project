@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Trade History{% endblock %}
+
+{% block content %}
+
+<div class="trade-page">
+
+    <h1 class="trade-title">
+        Trade History
+    </h1>
+
+    {% if trades %}
+
+    <div class="trade-results-grid">
+
+        {% for trade in trades %}
+
+        <div class="trade-result-card">
+
+            <h3>
+                {{ trade.sender.username }} → {{ trade.receiver.username }}
+            </h3>
+
+            <p>
+                Offered:
+                <strong>{{ get_pokemon_name(trade.offered_pokemon_id) }}</strong>
+            </p>
+
+            <img class="trade-pokemon-img"
+                 src="{{ get_pokemon_image(trade.offered_pokemon_id) }}">
+
+            <p>
+                Wanted:
+                <strong>{{ get_pokemon_name(trade.requested_pokemon_id) }}</strong>
+            </p>
+
+            <img class="trade-pokemon-img"
+                 src="{{ get_pokemon_image(trade.requested_pokemon_id) }}">
+
+            <p>
+                Status:
+                <strong>{{ trade.status.title() }}</strong>
+            </p>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    {% else %}
+
+    <div class="no-trade-results">
+        No trade history yet.
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

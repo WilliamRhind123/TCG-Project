@@ -1,0 +1,1244 @@
+body {
+    background-color: #f4f4f4;
+}
+
+.collection-page {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 30px;
+    padding: 30px;
+}
+
+.collection-stats {
+    grid-column: 1 / -1;
+    display: flex;
+    gap: 20px;
+    margin-bottom: 10px;
+}
+
+.stat-card {
+    flex: 1;
+    background: white;
+    border-radius: 18px;
+    padding: 18px;
+    text-align: center;
+    box-shadow: 0 0 18px rgba(147, 68, 252, 0.25);
+}
+
+.stat-card h4 {
+    color: #9344fc;
+    font-size: 18px;
+}
+
+.stat-card p {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.stat-card small {
+    font-weight: bold;
+    color: #9344fc;
+}
+
+.progress-container {
+    grid-column: 1 / -1;
+    width: 100%;
+    height: 28px;
+    background: #ddd;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #9344fc, #c084fc);
+    transition: width 0.5s ease;
+}
+
+.collection-controls {
+    grid-column: 1 / -1;
+    background: white;
+    border-radius: 18px;
+    padding: 18px;
+    box-shadow: 0 0 18px rgba(147, 68, 252, 0.15);
+}
+
+#pokemon-search {
+    width: 100%;
+    padding: 14px 20px;
+    border-radius: 16px;
+    border: 2px solid #d8baff;
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+.sort-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.sort-buttons button {
+    border: none;
+    padding: 10px 18px;
+    border-radius: 14px;
+    background: #9344fc;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.sort-buttons button:hover {
+    transform: scale(1.05);
+    background: #7a2ee6;
+}
+
+.pokemon-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 18px;
+    padding: 20px;
+}
+
+.pokemon-box {
+    background: white;
+    border-radius: 14px;
+    padding: 12px;
+    min-height: 180px;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.12);
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border 0.25s ease;
+}
+
+.pokemon-box:hover {
+    transform: scale(1.08);
+    z-index: 5;
+    box-shadow:
+        0 0 18px #9344fc,
+        0 0 35px rgba(147, 68, 252, 0.6);
+}
+
+.pokemon-box.selected {
+    transform: scale(1.1);
+    border: 3px solid #9344fc;
+    box-shadow:
+        0 0 20px #9344fc,
+        0 0 40px rgba(147, 68, 252, 0.9);
+}
+
+.pokemon-box img {
+    width: 90px;
+    height: 90px;
+    object-fit: contain;
+    image-rendering: pixelated;
+    transition: filter 0.3s ease;
+}
+
+.pokemon-box.locked img {
+    filter: grayscale(100%) brightness(40%);
+    opacity: 0.5;
+}
+
+.pokemon-box p {
+    margin: 8px 0 0;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.pokemon-detail-panel {
+    background: #111;
+    color: white;
+    border-radius: 25px;
+    padding: 30px;
+    min-height: 600px;
+    position: sticky;
+    top: 25px;
+    border: 3px solid #9344fc;
+    box-shadow: 0 0 25px rgba(147, 68, 252, 0.7);
+    text-align: center;
+}
+
+.pokemon-detail-panel img {
+    width: 240px;
+    image-rendering: pixelated;
+    margin-bottom: 20px;
+    filter:
+        grayscale(100%)
+        brightness(45%)
+        drop-shadow(0 0 18px #9344fc);
+    opacity: 0.7;
+}
+
+.pokemon-detail-panel h2 {
+    color: #d8baff;
+    margin-bottom: 20px;
+    font-size: 32px;
+}
+
+.pokemon-detail-panel p {
+    text-align: left;
+    font-size: 15px;
+    margin-bottom: 12px;
+    line-height: 1.5;
+}
+
+@media (max-width: 1700px) {
+    .pokemon-grid {
+        grid-template-columns: repeat(6, 1fr);
+    }
+}
+
+@media (max-width: 1400px) {
+    .pokemon-grid {
+        grid-template-columns: repeat(5, 1fr);
+    }
+}
+
+@media (max-width: 1200px) {
+    .collection-page {
+        grid-template-columns: 1fr;
+    }
+
+    .pokemon-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .pokemon-detail-panel {
+        position: static;
+    }
+}
+
+@media (max-width: 800px) {
+    .pokemon-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .collection-stats {
+        flex-direction: column;
+    }
+}
+
+.pokemon-box {
+    position: relative;
+}
+
+.mini-type-icon {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 28px !important;
+    height: 28px !important;
+    object-fit: contain;
+}
+
+.pokemon-sprite {
+    margin-top: 18px;
+}
+
+.detail-type-image {
+    width: 150px !important;
+    height: auto !important;
+    margin-bottom: 20px;
+    filter: none !important;
+    opacity: 1 !important;
+}
+
+#type-sort {
+
+    padding: 10px 14px;
+
+    border-radius: 14px;
+
+    border: none;
+
+    background: #9344fc;
+
+    color: white;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    min-width: 180px;
+}
+
+#type-sort option {
+
+    background: white;
+
+    color: black;
+}
+
+.profile-page {
+
+    padding: 40px;
+}
+
+.profile-title {
+
+    text-align: center;
+
+    margin-bottom: 40px;
+
+    font-size: 42px;
+
+    color: #9344fc;
+}
+
+.badge-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+
+    gap: 30px;
+}
+
+.badge-card {
+
+    background: white;
+
+    border-radius: 22px;
+
+    padding: 25px;
+
+    text-align: center;
+
+    box-shadow: 0 0 18px rgba(0,0,0,0.12);
+
+    transition: 0.25s ease;
+}
+
+.badge-card:hover {
+
+    transform: translateY(-5px);
+
+    box-shadow:
+        0 0 25px rgba(147, 68, 252, 0.35);
+}
+
+.badge-frame {
+
+    position: relative;
+
+    width: 140px;
+
+    height: 140px;
+
+    margin: auto;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+}
+
+.badge-ring {
+
+    position: absolute;
+
+    width: 120px;
+
+    height: 120px;
+
+    object-fit: contain;
+
+    z-index: 2;
+
+    left: 50%;
+
+    top: 50%;
+
+    transform: translate(-50%, -50%);
+}
+
+.badge-icon {
+
+    position: absolute;
+
+    width: 70px;
+
+    height: 70px;
+
+    object-fit: contain;
+
+    z-index: 1;
+
+    left: 50%;
+
+    top: 50%;
+
+    transform: translate(-50%, -50%);
+}
+
+.badge-card h3 {
+
+    margin-top: 18px;
+
+    color: #333;
+}
+
+.badge-card p {
+
+    color: #666;
+}
+
+.profile-collection {
+
+    margin-top: 70px;
+}
+
+.mini-collection-title {
+
+    font-size: 38px;
+
+    color: #9344fc;
+
+    margin-bottom: 30px;
+
+    text-align: center;
+}
+
+.mini-collection-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+
+    gap: 25px;
+}
+
+.mini-card {
+
+    background: white;
+
+    border-radius: 22px;
+
+    padding: 20px;
+
+    text-align: center;
+
+    box-shadow: 0 0 18px rgba(0,0,0,0.1);
+
+    transition: 0.25s ease;
+}
+
+.mini-card:hover {
+
+    transform: translateY(-5px);
+
+    box-shadow:
+        0 0 20px rgba(147, 68, 252, 0.35);
+}
+
+.mini-card img {
+
+    width: 90px;
+
+    height: 90px;
+
+    object-fit: contain;
+
+    image-rendering: pixelated;
+}
+
+.mini-card h4 {
+
+    margin-top: 15px;
+
+    font-size: 18px;
+}
+
+.mini-card p {
+
+    color: #9344fc;
+
+    font-weight: bold;
+
+    font-size: 18px;
+}
+
+.favourite-pokemon-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    gap: 14px;
+    max-height: 420px;
+    overflow-y: auto;
+    padding: 15px;
+    background: white;
+    border-radius: 18px;
+    box-shadow: 0 0 18px rgba(147, 68, 252, 0.18);
+}
+
+.favourite-option input {
+    display: none;
+}
+
+.favourite-option label {
+    display: block;
+    text-align: center;
+    padding: 10px;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.favourite-option img {
+    width: 65px;
+    height: 65px;
+    object-fit: contain;
+    image-rendering: pixelated;
+}
+
+.favourite-option span {
+    display: block;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.favourite-option input:checked + label {
+    border: 3px solid #9344fc;
+    box-shadow: 0 0 18px rgba(147, 68, 252, 0.7);
+    transform: scale(1.05);
+}
+
+.user-profile-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: black;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.user-profile-link {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    text-decoration: none;
+
+    color: #111;
+
+    background: rgba(255,255,255,0.45);
+
+    padding: 8px 16px;
+
+    border-radius: 999px;
+
+    transition: 0.25s ease;
+
+    border: 2px solid rgba(147, 68, 252, 0.35);
+
+    backdrop-filter: blur(10px);
+}
+
+.user-profile-link:hover {
+
+    color: #9344fc;
+}
+
+.nav-profile-pic {
+
+    width: 38px;
+
+    height: 38px;
+
+    object-fit: contain;
+
+    image-rendering: pixelated;
+
+    background: white;
+
+    border-radius: 50%;
+
+    padding: 4px;
+
+    border: 2px solid #9344fc;
+
+    box-shadow:
+        0 0 12px rgba(147, 68, 252, 0.45);
+}
+
+.profile-header {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 25px;
+
+    margin-bottom: 50px;
+}
+
+.profile-header-pic {
+
+    width: 120px;
+
+    height: 120px;
+
+    object-fit: contain;
+
+    image-rendering: pixelated;
+
+    background: white;
+
+    border-radius: 50%;
+
+    padding: 10px;
+
+    border: 5px solid #9344fc;
+
+    box-shadow:
+        0 0 25px rgba(147, 68, 252, 0.6);
+}
+
+.profile-username {
+
+    font-size: 42px;
+
+    margin: 0;
+
+    color: #222;
+}
+
+.profile-subtitle {
+
+    font-size: 18px;
+
+    color: #777;
+
+    margin-top: 6px;
+}
+
+.trade-page {
+    padding: 40px;
+}
+
+.trade-title {
+    text-align: center;
+    color: #9344fc;
+    font-size: 42px;
+    margin-bottom: 10px;
+}
+
+.trade-subtitle {
+    text-align: center;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.trade-search-form {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 40px;
+}
+
+.trade-search-form input {
+    width: 420px;
+    padding: 14px 18px;
+    border-radius: 16px;
+    border: 2px solid #d8baff;
+    font-size: 16px;
+}
+
+.trade-search-form button {
+    border: none;
+    background: #9344fc;
+    color: white;
+    padding: 14px 24px;
+    border-radius: 16px;
+    font-weight: bold;
+}
+
+.trade-results-title {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.trade-results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 25px;
+}
+
+.trade-result-card {
+    background: white;
+    border-radius: 22px;
+    padding: 25px;
+    text-align: center;
+    box-shadow: 0 0 18px rgba(147, 68, 252, 0.2);
+}
+
+.trade-user-pic {
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
+    image-rendering: pixelated;
+    border-radius: 50%;
+    border: 3px solid #9344fc;
+    padding: 6px;
+}
+
+.trade-pokemon-img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    image-rendering: pixelated;
+    margin: 15px 0;
+}
+
+.trade-request-btn {
+    margin-top: 15px;
+    border: none;
+    background: #111;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 14px;
+}
+
+.no-trade-results {
+    max-width: 500px;
+    margin: auto;
+    background: white;
+    padding: 25px;
+    border-radius: 18px;
+    text-align: center;
+    font-weight: bold;
+    box-shadow: 0 0 18px rgba(147, 68, 252, 0.2);
+}
+
+.trade-profile-link {
+    text-decoration: none;
+    color: black;
+}
+
+.trade-profile-link:hover {
+    color: #9344fc;
+}
+
+.notification-badge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background: red;
+    color: white;
+    font-size: 12px;
+    border-radius: 50%;
+    padding: 3px 7px;
+}
+
+.notification-menu {
+    width: 320px;
+    padding: 10px;
+}
+
+.notification-item {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.notification-img {
+    width: 45px;
+    height: 45px;
+    object-fit: contain;
+    image-rendering: pixelated;
+    border-radius: 50%;
+    border: 2px solid #9344fc;
+}
+
+.notification-item p {
+    margin: 0;
+    font-size: 14px;
+}
+
+.achievement-popup {
+    position: fixed;
+    top: 90px;
+    right: 25px;
+    background: white;
+    border: 3px solid #9344fc;
+    border-radius: 18px;
+    padding: 18px 22px;
+    width: 330px;
+    z-index: 9999;
+    box-shadow: 0 0 25px rgba(147, 68, 252, 0.55);
+    transform: translateX(120%);
+    opacity: 0;
+    transition: 0.4s ease;
+}
+
+.achievement-popup.show {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.achievement-popup strong {
+    color: #9344fc;
+    font-size: 18px;
+}
+
+.achievement-popup p {
+    margin: 8px 0 0;
+    font-weight: 600;
+}
+
+.badge-card {
+    cursor: pointer;
+}
+
+.badge-detail-box {
+    margin-top: 50px;
+    background: white;
+    border-radius: 22px;
+    padding: 30px;
+    box-shadow: 0 0 18px rgba(147, 68, 252, 0.25);
+}
+
+.badge-detail-box h2 {
+    color: #9344fc;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.badge-pokemon-row {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+    font-size: 18px;
+}
+
+.badge-pokemon-row img {
+    width: 55px;
+    height: 55px;
+    object-fit: contain;
+    image-rendering: pixelated;
+}
+
+.badge-pokemon-row span {
+    flex: 1;
+    font-weight: bold;
+}
+
+.empty-badge-message {
+    text-align: center;
+    color: #777;
+}
+
+.badge-side-panel {
+    position: fixed;
+    top: 0;
+    right: -430px;
+    width: 430px;
+    height: 100vh;
+    background: white;
+    z-index: 9999;
+    padding: 30px;
+    box-shadow: -8px 0 30px rgba(147, 68, 252, 0.35);
+    transition: 0.35s ease;
+    overflow-y: auto;
+}
+
+.badge-side-panel.open {
+    right: 0;
+}
+
+.badge-panel-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.25);
+    z-index: 9998;
+}
+
+.badge-panel-overlay.show {
+    display: block;
+}
+
+.close-badge-panel {
+    float: right;
+    border: none;
+    background: #9344fc;
+    color: white;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    font-size: 22px;
+}
+
+.badge-current-status {
+    background: #f4ecff;
+    border-radius: 18px;
+    padding: 18px;
+    margin: 20px 0;
+}
+
+.badge-current-status h3 {
+    color: #9344fc;
+}
+
+.badge-level {
+    border-radius: 14px;
+    padding: 14px;
+    margin-bottom: 12px;
+}
+
+.badge-level.unlocked {
+    background: #f4ecff;
+    border: 2px solid #9344fc;
+}
+
+.badge-level.locked {
+    background: #eee;
+    color: #777;
+    filter: grayscale(100%);
+}
+
+.badge-pokemon-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.badge-pokemon-row img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    image-rendering: pixelated;
+}
+
+.badge-pokemon-row span {
+    flex: 1;
+    font-weight: bold;
+}
+
+.pokemon-detail-panel {
+    position: sticky;
+    top: 90px;
+    align-self: flex-start;
+    max-height: calc(100vh - 110px);
+    overflow-y: auto;
+}
+
+.detail-sprite-pair {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+}
+
+.detail-sprite-pair img {
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
+}
+
+#shiny-toggle-btn {
+    background: linear-gradient(90deg, #9333ea, #7c3aed);
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 12px;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+#shiny-toggle-btn:hover {
+    transform: scale(1.05);
+}
+
+.trade-request-btn {
+    display: inline-block;
+    background: linear-gradient(90deg, #9333ea, #7c3aed);
+    color: white;
+    text-decoration: none;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 14px;
+    font-weight: bold;
+    margin-top: 15px;
+    cursor: pointer;
+    transition: 0.2s ease;
+    box-shadow: 0 0 15px rgba(147, 51, 234, 0.35);
+}
+
+.trade-request-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(147, 51, 234, 0.6);
+    color: white;
+}
+
+.trade-result-card form {
+    width: 100%;
+}
+
+.trade-result-card .trade-request-btn {
+    width: 100%;
+    text-align: center;
+}
+
+.trade-decline-btn {
+    display: inline-block;
+    background: #ef4444;
+    color: white;
+    text-decoration: none;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 14px;
+    font-weight: bold;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: 0.2s ease;
+    width: 100%;
+}
+
+.trade-decline-btn:hover {
+    transform: scale(1.05);
+    background: #dc2626;
+}
+
+.bronze-ring {
+    border: 4px solid #cd7f32;
+    box-shadow: 0 0 20px rgba(205, 127, 50, 0.4);
+}
+
+.silver-ring {
+    border: 4px solid #c0c0c0;
+    box-shadow: 0 0 20px rgba(192, 192, 192, 0.4);
+}
+
+.gold-ring {
+    border: 4px solid #ffd700;
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.5);
+}
+
+.feed-page {
+    padding: 40px;
+}
+
+.feed-create-card,
+.feed-post-card {
+    background: white;
+    border-radius: 22px;
+    padding: 25px;
+    margin: 25px auto;
+    max-width: 800px;
+    box-shadow: 0 0 25px rgba(147, 51, 234, 0.15);
+}
+
+.feed-textarea {
+    width: 100%;
+    min-height: 100px;
+    border: 2px solid #d8baff;
+    border-radius: 15px;
+    padding: 15px;
+    resize: vertical;
+}
+
+.feed-post-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.feed-profile-pic {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    border: 3px solid #9333ea;
+    border-radius: 50%;
+    padding: 5px;
+}
+
+.feed-post-content {
+    margin-top: 20px;
+    font-size: 18px;
+}
+
+.feed-like-btn {
+    background: none;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.feed-like-btn {
+    background: none;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: bold;
+    margin-top: 15px;
+    cursor: pointer;
+}
+
+.feed-heart-icon {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    transition: 0.2s;
+}
+
+.feed-heart-icon:hover {
+    transform: scale(1.15);
+}
+
+.feed-profile-link {
+    color: black;
+    text-decoration: none;
+}
+
+.feed-profile-link:hover {
+    color: #9333ea;
+    text-decoration: underline;
+}
+
+.feed-like-btn {
+    background: none;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.feed-heart-icon {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+}
+
+.feed-post-card {
+    max-width: 800px;
+    margin: 25px auto;
+    padding: 28px;
+}
+
+.feed-comments-list {
+    margin-top: 12px;
+}
+
+.feed-comment {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: #f8f3ff;
+    padding: 12px;
+    border-radius: 14px;
+    margin-bottom: 10px;
+}
+
+.feed-comment-pic {
+    width: 38px;
+    height: 38px;
+    object-fit: contain;
+    border: 2px solid #9333ea;
+    border-radius: 50%;
+    padding: 3px;
+    flex-shrink: 0;
+}
+
+.feed-comment strong {
+    font-size: 14px;
+}
+
+.feed-comment small {
+    font-size: 11px;
+    color: #777;
+    margin-left: 6px;
+}
+
+.feed-comment p {
+    margin: 3px 0 0;
+    font-size: 14px;
+}
+
+.feed-comments-section h4 {
+    font-size: 18px;
+    margin-top: 16px;
+}
+
+.feed-comment-form {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.feed-comment-input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 2px solid #d8baff;
+    border-radius: 14px;
+    outline: none;
+    font-size: 14px;
+    transition: 0.2s;
+    background: white;
+}
+
+.feed-comment-input:focus {
+    border-color: #9333ea;
+    box-shadow: 0 0 10px rgba(147, 51, 234, 0.2);
+}
+
+.feed-comment-form button {
+    background: linear-gradient(
+        135deg,
+        #a855f7,
+        #9333ea
+    );
+
+    color: white;
+    border: none;
+    border-radius: 14px;
+    padding: 0 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.feed-comment-form button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(147, 51, 234, 0.35);
+}
+
+.show-more-comments-btn {
+    background: none;
+    border: none;
+    color: #9333ea;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 12px;
+    padding: 0;
+    transition: 0.2s;
+}
+
+.show-more-comments-btn:hover {
+    color: #7e22ce;
+    text-decoration: underline;
+}

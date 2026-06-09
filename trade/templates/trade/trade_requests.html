@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Trade Requests{% endblock %}
+
+{% block content %}
+
+<div class="trade-page">
+
+    <h1 class="trade-title">
+        Trade Requests
+    </h1>
+
+    {% if incoming_requests %}
+
+    <div class="trade-results-grid">
+
+        {% for trade in incoming_requests %}
+
+        <div class="trade-result-card">
+
+            <h3>
+                {{ trade.sender.username }} wants to trade
+            </h3>
+
+            <img class="trade-pokemon-img"
+                 src="{{ get_pokemon_image(trade.offered_pokemon_id) }}">
+
+            <p>
+                They offer:
+                <strong>{{ get_pokemon_name(trade.offered_pokemon_id) }}</strong>
+            </p>
+
+            <img class="trade-pokemon-img"
+                 src="{{ get_pokemon_image(trade.requested_pokemon_id) }}">
+
+            <p>
+                They want:
+                <strong>{{ get_pokemon_name(trade.requested_pokemon_id) }}</strong>
+            </p>
+
+            <form method="POST"
+                  action="{{ url_for('trade.accept_trade', trade_id=trade.id) }}">
+                <button class="trade-request-btn">
+                    Accept
+                </button>
+            </form>
+
+            <form method="POST"
+                  action="{{ url_for('trade.decline_trade', trade_id=trade.id) }}">
+                <button class="trade-decline-btn">
+                    Decline
+                </button>
+            </form>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    {% else %}
+
+    <div class="no-trade-results">
+        You have no pending trade requests.
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

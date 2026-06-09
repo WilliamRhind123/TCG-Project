@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}Trade{% endblock %}
+
+{% block content %}
+
+<div class="trade-page">
+
+    <h1 class="trade-title">
+        Trade Search
+    </h1>
+
+    <p class="trade-subtitle">
+        Search for a Pokémon to see which trainers have it.
+    </p>
+
+    <form method="POST" class="trade-search-form">
+
+        <input
+            type="text"
+            name="pokemon_name"
+            placeholder="Search Pokémon, e.g. Mew"
+            value="{{ search_name }}"
+            required>
+
+        <button type="submit">
+            Search
+        </button>
+
+    </form>
+
+    {% if searched %}
+
+        {% if not pokemon_exists %}
+
+            <div class="no-trade-results">
+                That Pokémon does not exist.
+            </div>
+
+        {% elif results %}
+
+            <h2 class="trade-results-title">
+                Trainers who have this Pokémon
+            </h2>
+
+            <div class="trade-results-grid">
+
+                {% for result in results %}
+
+                <div class="trade-result-card">
+
+                    <a href="{{ url_for('public_profile', username=result.username) }}"
+                       class="trade-profile-link">
+
+                        <img class="trade-user-pic"
+                             src="{{ url_for('static',
+                             filename='PokemonSpritesGen1/' ~ result.favourite_pokemon_id ~ '.png') }}">
+
+                        <h3>{{ result.username }}</h3>
+
+                    </a>
+
+                    <img class="trade-pokemon-img"
+                         src="{{ result.pokemon_image }}">
+
+                    <p>
+                        Has {{ result.pokemon_name }}
+                    </p>
+
+                    <strong>
+                        Quantity: x{{ result.quantity }}
+                    </strong>
+
+                    <a class="trade-request-btn"
+                href="{{ url_for(
+                        'trade.request_trade',
+                        receiver_username=result.username,
+                        pokemon_name=result.pokemon_name
+                ) }}">
+                    Request Trade
+                </a>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="no-trade-results">
+                No one has this Pokémon yet.
+            </div>
+
+        {% endif %}
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

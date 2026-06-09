@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Community Feed{% endblock %}
+
+{% block content %}
+
+<div class="feed-page">
+
+    <h1 class="trade-title">
+        Trainer Feed
+    </h1>
+
+    <p class="trade-subtitle">
+        Share updates, achievements, trades, and Pokémon moments.
+    </p>
+
+    <div class="feed-create-card">
+
+        <form method="POST"
+              action="{{ url_for('feed.create_feed_post') }}">
+
+            <textarea name="content"
+                      class="feed-textarea"
+                      placeholder="What's happening in your Pokémon journey?"
+                      required></textarea>
+
+            <button class="trade-request-btn">
+                Post
+            </button>
+
+        </form>
+
+    </div>
+
+    <div class="feed-posts">
+
+        {% if posts %}
+
+            {% for post in posts %}
+                {% include "post.html" %}
+            {% endfor %}
+
+        {% else %}
+
+            <div class="no-trade-results">
+                No posts yet.
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/feed.js') }}"></script>
+
+{% endblock %}

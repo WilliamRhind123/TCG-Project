@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}{{ viewed_user.username }}{% endblock %}
+
+{% block content %}
+
+<div class="profile-page">
+
+    <div class="profile-header">
+
+        <img class="profile-header-pic"
+             src="{{ url_for('static', filename='PokemonSpritesGen1/' ~ viewed_user.favourite_pokemon_id ~ '.png') }}">
+
+        <div>
+            <h2 class="profile-username">
+                {{ viewed_user.username }}
+            </h2>
+
+            <p class="profile-subtitle">
+                Pokémon Trainer
+            </p>
+        </div>
+
+    </div>
+
+    <div class="profile-collection">
+
+        <h2 class="mini-collection-title">
+            {{ viewed_user.username }}'s Collection
+        </h2>
+
+        <div class="mini-collection-grid">
+
+            {% for pokemon in pokemon_data %}
+
+                {% if pokemon['id'] in owned %}
+
+                <div class="mini-card">
+
+                    <img src="{{ url_for('static', filename='PokemonSpritesGen1/' ~ pokemon['id'] ~ '.png') }}">
+
+                    <h4>{{ pokemon['name']['english'] }}</h4>
+
+                    <p>x{{ owned[pokemon['id']] }}</p>
+
+                </div>
+
+                {% endif %}
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

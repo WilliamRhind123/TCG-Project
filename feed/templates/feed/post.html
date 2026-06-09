@@ -1,0 +1,129 @@
+<div class="feed-post-card" id="feed-post-{{ post.id }}">
+
+    <div class="feed-post-header">
+
+        <a href="{{ url_for('public_profile', username=post.user.username) }}">
+            <img class="feed-profile-pic"
+                 src="{{ url_for('static',
+                 filename='PokemonSpritesGen1/' ~ post.user.favourite_pokemon_id ~ '.png') }}">
+        </a>
+
+        <div>
+            <a href="{{ url_for('public_profile', username=post.user.username) }}"
+               class="feed-profile-link">
+                <h3>{{ post.user.username }}</h3>
+            </a>
+
+            <small>{{ post.created_at.strftime("%d %b %Y %H:%M") }}</small>
+        </div>
+
+    </div>
+
+    <p class="feed-post-content">
+        {{ post.content }}
+    </p>
+
+    {% set liked = namespace(value=false) %}
+
+    {% for like in post.likes %}
+        {% if like.user_id == current_user.id %}
+            {% set liked.value = true %}
+        {% endif %}
+    {% endfor %}
+
+    <button class="feed-like-btn"
+            data-post-id="{{ post.id }}">
+
+        <img class="feed-heart-icon"
+             src="{% if liked.value %}
+                    {{ url_for('static', filename='hearts/FullHeart.png') }}
+                  {% else %}
+                    {{ url_for('static', filename='hearts/EmptyHeart.png') }}
+                  {% endif %}">
+
+        <span class="feed-like-count">
+            {{ post.likes|length }}
+        </span>
+
+        <span class="feed-like-text">
+            likes
+        </span>
+
+    </button>
+
+    <div class="feed-comments-section">
+
+        <h4>
+            Comments
+            (<span class="feed-comment-count">{{ post.comments|length }}</span>)
+        </h4>
+
+        <div class="feed-comments-list">
+
+            {% for comment in post.comments[:3] %}
+
+                <div class="feed-comment">
+
+                    <img class="feed-comment-pic"
+                         src="{{ url_for('static',
+                         filename='PokemonSpritesGen1/' ~ comment.user.favourite_pokemon_id ~ '.png') }}">
+
+                    <div>
+                        <strong>{{ comment.user.username }}</strong>
+                        <small>{{ comment.created_at.strftime("%d %b %Y %H:%M") }}</small>
+                        <p>{{ comment.content }}</p>
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+            {% if post.comments|length > 3 %}
+
+                <div class="hidden-comments" style="display: none;">
+
+                    {% for comment in post.comments[3:] %}
+
+                        <div class="feed-comment">
+
+                            <img class="feed-comment-pic"
+                                 src="{{ url_for('static',
+                                 filename='PokemonSpritesGen1/' ~ comment.user.favourite_pokemon_id ~ '.png') }}">
+
+                            <div>
+                                <strong>{{ comment.user.username }}</strong>
+                                <small>{{ comment.created_at.strftime("%d %b %Y %H:%M") }}</small>
+                                <p>{{ comment.content }}</p>
+                            </div>
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+                <button class="show-more-comments-btn">
+                    Show all comments
+                </button>
+
+            {% endif %}
+
+        </div>
+
+        <form class="feed-comment-form"
+              data-post-id="{{ post.id }}">
+
+            <input type="text"
+                   class="feed-comment-input"
+                   placeholder="Write a comment..."
+                   required>
+
+            <button type="submit">
+                Comment
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
